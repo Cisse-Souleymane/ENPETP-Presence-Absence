@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIENVENUE A L'ENPETP</title>
+    <link rel="stylesheet" href="style.css">
+  
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-image: url('ENPETP.jpg');
+            background-size: cover;
+            background-position:center fixed;
+            background-repeat: no-repeat;
+        }
+
+       
+    </style>
+
+</head>
+<body>
+    <div id="admin-login" class="admin-login">
+    <h2><strong>Connexion Administrateur</strong></h2>
+    <input type="text" id="admin-username" placeholder="Nom d'utilisateur" class="input-field">
+    <input type="password" id="admin-password" placeholder="Mot de passe" class="input-field">
+    <button id="login-btn" class="btn primary-btn"><strong>Se connecter</strong></button>
+    <p id="login-error" class="error-message"></p>
+</div>
+
+    <div class="container">
+        <h1><strong>BIENVENUE A L'ENPETP</strong></h1>
+
+        <div class="tabs">
+            <button class="tab-link active" onclick="openTab(event, 'presences')"><strong>Gestion des présences</strong></button>
+            <button class="tab-link" onclick="openTab(event, 'travailleurs')"><strong>Gestion des travailleurs</strong></button>
+            <button class="tab-link" onclick="openTab(event, 'historique')"><strong>Telechargement des enregistrements</strong></button>
+        </div>
+
+        <div id="presences" class="tab-content active">
+            <h2><strong>Ajouter un enregistrement de présence/absence</strong></h2>
+            <select id="worker-select" class="input-field"></select>
+            <select id="status" class="input-field">
+                <option value="Présent">Présent</option>
+                <option value="Absent">Absent</option>
+            </select>
+            <select id="absence-reason" class="input-field" style="display: none;">
+                <option value="Maladie">Maladie</option>
+                <option value="Congé">Congé</option>
+                <option value="Autre">Autre</option>
+            </select>
+            <button id="add-record-btn" class="btn primary-btn"><strong>Ajouter</strong></button>
+
+            <h2><strong>Tableau des présences et absences</strong></h2>
+            <table id="records-table">
+                <thead>
+                    <tr>
+                        <th>Nom du travailleur</th>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Statut</th>
+                        <th>Raison (si absent)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <!-- Ajoutez ce bouton dans la section Gestion des présences -->
+            <button id="save-today-records-btn" class="btn primary-btn"><strong>Enregistrer les enregistrements du jour</strong></button>
+
+            <button id="clear-records-btn" class="btn danger-btn"><strong>Effacer tous les enregistrements</strong></button>
+        </div>
+
+    </div>
+
+
+        <div id="travailleurs" class="tab-content">
+            <h2><strong>Ajouter un travailleur</strong></h2>
+            <input type="text" id="new-worker-name" placeholder="Nom du travailleur" class="input-field">
+            <button id="add-worker-btn" class="btn primary-btn"><strong>Ajouter un travailleur</strong></button>
+
+            <h2><strong>Liste des travailleurs</strong></h2>
+            <ul id="worker-list"></ul>
+        </div>
+
+       
+        <div id="historique" class="tab-content">
+           <button id="download-pdf" class="download-btn">
+                <i class="fas fa-file-download"></i> Télécharger en PDF
+            </button>
+        
+        </div>
+        
+    
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>
+

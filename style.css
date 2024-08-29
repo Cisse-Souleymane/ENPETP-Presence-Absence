@@ -1,0 +1,328 @@
+/* Styles généraux */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+h1, h2 {
+    font-weight: 400;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles de la page de connexion */
+#error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f7fa;
+}
+
+#login-form {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Styles des onglets */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.tab-link {
+    background-color: #e9ecef;
+    border: 10px;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #007bff;
+    transition: all 0.3s ease;
+    border-radius: 8px 8px 5px 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tab-link.active {
+    background-color: #007bff;
+    color: white;
+    box-shadow: none;
+}
+
+.tab-link:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Styles des champs de saisie et boutons */
+.input-field {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.input-field:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.danger-btn {
+    background-color: #e74c3c;
+}
+
+.danger-btn:hover {
+    background-color: #c0392b;
+}
+
+.primary-btn {
+    background-color: #28a745;
+}
+
+.primary-btn:hover {
+    background-color: #218838;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table th, table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+#worker-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#worker-list li {
+    padding: 15px;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+}
+
+#worker-list li button {
+    background-color: #e74c3c;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+#worker-list li button:hover {
+    background-color: #c0392b;
+}
+
+@media (max-width: 768px) {
+    .tabs {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+.reset-section {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.admin-login {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: greenyellow;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.admin-login input {
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.admin-login input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.admin-login .error-message {
+    color: #e74c3c;
+    margin-top: 10px;
+}
+
+/* Table Responsive */
+@media (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+    /* Styles pour la table historique */
+#historique-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#historique-table th, #historique-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+#historique-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+#historique-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#historique-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+}
+
+.download-btn {
+    background-color: #22a069;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.download-btn i {
+    margin-right: 8px;
+}
+
+.download-btn:hover {
+    background-color: #1b8b5d;
+    transform: translateY(-2px);
+}
+
+.download-btn:active {
+    background-color: #168150;
+    transform: translateY(0);
+}
+
