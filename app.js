@@ -140,6 +140,8 @@ function deleteWorker(workerName) {
 
 function loadWorkers() {
     const workers = getLocalStorageData('workers');
+    workers.sort((a, b) => a.localeCompare(b));
+     workerSelect.innerHTML = '';
     workers.forEach(worker => {
         addWorkerToList(worker);
     });
