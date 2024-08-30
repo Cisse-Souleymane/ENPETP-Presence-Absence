@@ -29,6 +29,7 @@
     <input type="password" id="admin-password" placeholder="Mot de passe" class="input-field">
     <button id="login-btn" class="btn primary-btn"><strong>Se connecter</strong></button>
     <p id="login-error" class="error-message"></p>
+
 </div>
 
     <div class="container">
@@ -42,6 +43,7 @@
 
         <div id="presences" class="tab-content active">
             <h2><strong>Ajouter un enregistrement de présence/absence</strong></h2>
+
             <select id="worker-select" class="input-field"></select>
             <select id="status" class="input-field">
                 <option value="Présent">Présent</option>
@@ -67,10 +69,12 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            <!-- Ajoutez ce bouton dans la section Gestion des présences -->
+
             <button id="save-today-records-btn" class="btn primary-btn"><strong>Enregistrer les enregistrements du jour</strong></button>
 
             <button id="clear-records-btn" class="btn danger-btn"><strong>Effacer tous les enregistrements</strong></button>
+            <button id="logout-btn" class="btn danger-btn"><strong>Se déconnecter</strong></button>
+
         </div>
 
     </div>
@@ -87,11 +91,15 @@
 
        
         <div id="historique" class="tab-content">
+              <label for="filter-date">Sélectionner une date :</label>
+    <input type="date" id="filter-date">
+
            <button id="download-pdf" class="download-btn">
                 <i class="fas fa-file-download"></i> Télécharger en PDF
             </button>
-        
         </div>
+        
+
         
     
 
