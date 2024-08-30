@@ -364,4 +364,10 @@ downloadBtn.addEventListener('click', function() {
 
     doc.save('historique_enregistrement.pdf');
 });
+const logoutBtn = document.getElementById('logout-btn');
 
+logoutBtn.addEventListener('click', () => {
+    localStorage.setItem('adminLogin', JSON.stringify({ isLoggedIn: false }));
+    alert('Vous êtes déconnecté.');
+    window.location.reload();
+});
