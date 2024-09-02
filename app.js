@@ -10,6 +10,10 @@ const workerList = document.querySelector('#worker-list');
 const saveTodayRecordsBtn = document.querySelector('#save-today-records-btn');
 const historiqueTableBody = document.querySelector('#historique-table tbody');
 
+console.log(localStorage.getItem("adminName"));
+console.log(localStorage.getItem("adminEmail"));
+
+
 function loadHistorique() {
     const historique = getLocalStorageData('historique-table');
     historique.forEach(record => {
@@ -40,7 +44,6 @@ function loadHistorique() {
     });
 }
 
-// Appeler loadHistorique pour charger les données d'historique lors du chargement de la page
 window.onload = function() {
     loadWorkers();
     loadRecords();
@@ -65,7 +68,6 @@ function saveTodayRecords() {
     history.push(...todayRecords);
     setLocalStorageData('historique', history);
 
-    // Optionnel : Vous pouvez ajouter un message de confirmation ou afficher les enregistrements enregistrés.
     alert('Les enregistrements du jour ont été sauvegardés dans l\'historique.');
 }
 
@@ -188,7 +190,6 @@ function handleAddRecord() {
     saveRecord(record);
     addRecordToTable(record);
 
-    // Actualiser automatiquement les enregistrements pour la date sélectionnée
     const selectedDate = datePicker.value;
     if (selectedDate) {
         displayRecordsForDate(selectedDate);
@@ -228,7 +229,6 @@ function handleStatusChange() {
     }
 }
 
-// Fonction vérifiant si l'administrateur est connecté
 function isAdminLoggedIn() {
     return document.querySelector('.container').style.display === 'block';
 }
@@ -243,7 +243,6 @@ window.onload = function() {
     loadRecords();
 };
 
-// Connexion administrateur
 const adminUsername = 'soul';
 const adminPassword = 'cisse224@';
 
@@ -276,6 +275,7 @@ function handleAdminLogin() {
 loginBtn.addEventListener('click', handleAdminLogin);
 
 document.querySelector('.container').style.display = 'none';
+
 
 
 
@@ -319,8 +319,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, {});
     }
     
-
-    // Assurez-vous de charger les données lorsque l'onglet Historique est actif
     document.querySelectorAll('.tab-link').forEach(tab => {
         tab.addEventListener('click', function() {
             if (this.textContent.includes('Historique des enregistrements')) {
@@ -334,36 +332,77 @@ document.addEventListener('DOMContentLoaded', () => {
 const downloadBtn = document.getElementById('download-pdf');
 
 downloadBtn.addEventListener('click', function() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    const historique = JSON.parse(localStorage.getItem('presenceRecords')) || [];
-    if (historique.length === 0) {
-        alert("Aucun enregistrement à télécharger.");
-        return;
-    }
-
-    // Transformer les enregistrements pour les utiliser dans autoTable
-    const tableRows = historique.map(record => [
-        record.date || 'N/A',
-        record.workerName || 'N/A',
-        record.time || 'N/A',
-        record.status || 'N/A',
-        record.absenceReason || '-'
-    ]);
-
-    // Configuration de autoTable
-    doc.autoTable({
-        head: [['Date', 'Nom du Travailleur', 'Heure', 'Statut', 'Raison d\'absence']],
-        body: tableRows,
-        startY: 20,
-        headStyles: { fillColor: [22, 160, 133] },
-        theme: 'grid',
-        margin: { top: 10 },
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+    
+        const historique = JSON.parse(localStorage.getItem('presenceRecords')) || [];
+        if (historique.length === 0) {
+            alert("Aucun enregistrement à télécharger.");
+            return;
+        }
+    
+        // Grouper les enregistrements par date
+        const groupedRecords = groupRecordsByDate(historique);
+    
+        // Créer le tableau pour le PDF
+        const tableRows = [];
+        const dateTitles = Object.keys(groupedRecords).sort(); // Trier les dates pour une présentation chronologique
+    
+        dateTitles.forEach(date => {
+            // Ajouter un titre de date en gras avec une taille de police plus grande
+            tableRows.push([{ content: `Date: ${date}`, colSpan: 5, styles: { fontSize: 14, fontStyle: 'bold', fillColor: [220, 220, 220] } }]);
+    
+            // Ajouter les enregistrements pour cette date
+            groupedRecords[date].forEach(record => {
+                tableRows.push([
+                    '',  // colonne vide pour la date
+                    record.workerName || 'N/A',
+                    record.time || 'N/A',
+                    record.status || 'N/A',
+                    record.absenceReason || '-'
+                ]);
+            });
+    
+            // Ajouter une ligne vide après chaque groupe de dates pour la lisibilité
+            tableRows.push(['', '', '', '', '']);
+        });
+    
+        // Générer le PDF
+        doc.autoTable({
+            head: [['Date', 'Nom du Travailleur', 'Heure', 'Statut', 'Raison d\'absence']],
+            body: tableRows,
+            startY: 20,
+            headStyles: { fillColor: [22, 160, 133] },
+            theme: 'grid',
+            margin: { top: 10 },
+            styles: {
+                overflow: 'linebreak',
+                cellPadding: 2,
+                valign: 'middle',
+                fontSize: 12,
+                lineWidth: 0.2,
+                lineColor: [0, 0, 0],
+            },
+            columnStyles: {
+                0: { cellWidth: 'auto' },
+                1: { cellWidth: 'auto' },
+                2: { cellWidth: 'auto' },
+                3: { cellWidth: 'auto' },
+                4: { cellWidth: 'auto' }
+            },
+        });
+    
+        doc.save('historique_enregistrement.pdf');
     });
-
-    doc.save('historique_enregistrement.pdf');
-});
+function groupRecordsByDate(records) {
+        return records.reduce((acc, record) => {
+            if (!acc[record.date]) {
+                acc[record.date] = [];
+            }
+            acc[record.date].push(record);
+            return acc;
+        }, {});
+    }
 const logoutBtn = document.getElementById('logout-btn');
 
 logoutBtn.addEventListener('click', () => {
@@ -371,3 +410,55 @@ logoutBtn.addEventListener('click', () => {
     alert('Vous êtes déconnecté.');
     window.location.reload();
 });
+
+
+
+const filterDateInput = document.querySelector('#filter-date');
+
+filterDateInput.addEventListener('change', function() {
+    const selectedDate = this.value;
+    displayRecordsForDate(selectedDate);
+});
+
+function displayRecordsForDate(date) {
+    const records = getLocalStorageData('presenceRecords');
+    const filteredRecords = records.filter(record => record.date === date);
+    recordsTableBody.innerHTML = '';
+    filteredRecords.forEach(record => addRecordToTable(record));
+}
+
+
+
+function loginAdmin() {
+    console.log("Connexion de l'admin en cours...");
+
+    const admin = {
+        name: "Souleymane Cissé",
+        email: "admin@example.com"
+    };
+
+    localStorage.setItem("adminName", admin.name);
+    localStorage.setItem("adminEmail", admin.email);
+
+    console.log("Admin connecté : ", admin);
+    displayAdminProfile();
+}
+
+function displayAdminProfile() {
+    const adminName = localStorage.getItem("adminName");
+    const adminEmail = localStorage.getItem("adminEmail");
+
+    console.log("Vérification du profil admin...");
+    if (adminName && adminEmail) {
+        document.getElementById("adminName").textContent = adminName;
+        document.getElementById("adminEmail").textContent = adminEmail;
+        document.getElementById("adminProfile").style.display = "block";
+        console.log("Profil administrateur affiché.");
+    } else {
+        console.log("Aucun administrateur connecté.");
+    }
+}
+
+window.onload = function () {
+    displayAdminProfile();
+};
