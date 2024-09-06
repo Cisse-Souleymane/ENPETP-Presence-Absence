@@ -329,87 +329,99 @@ document.addEventListener('DOMContentLoaded', () => {
 
     downloadBtn.addEventListener('click', downloadPDF);
 });
-const downloadBtn = document.getElementById('download-pdf');
+// Fonction pour générer et télécharger le PDF
+function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-downloadBtn.addEventListener('click', function() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-    
-        const historique = JSON.parse(localStorage.getItem('presenceRecords')) || [];
-        if (historique.length === 0) {
-            alert("Aucun enregistrement à télécharger.");
-            return;
-        }
-    
-        // Grouper les enregistrements par date
-        const groupedRecords = groupRecordsByDate(historique);
-    
-        // Créer le tableau pour le PDF
-        const tableRows = [];
-        const dateTitles = Object.keys(groupedRecords).sort(); // Trier les dates pour une présentation chronologique
-    
-        dateTitles.forEach(date => {
-            // Ajouter un titre de date en gras avec une taille de police plus grande
-            tableRows.push([{ content: `Date: ${date}`, colSpan: 5, styles: { fontSize: 14, fontStyle: 'bold', fillColor: [220, 220, 220] } }]);
-    
-            // Ajouter les enregistrements pour cette date
-            groupedRecords[date].forEach(record => {
-                tableRows.push([
-                    '',  // colonne vide pour la date
-                    record.workerName || 'N/A',
-                    record.time || 'N/A',
-                    record.status || 'N/A',
-                    record.absenceReason || '-'
-                ]);
-            });
-    
-            // Ajouter une ligne vide après chaque groupe de dates pour la lisibilité
-            tableRows.push(['', '', '', '', '']);
-        });
-    
-        // Générer le PDF
-        doc.autoTable({
-            head: [['Date', 'Nom du Travailleur', 'Heure', 'Statut', 'Raison d\'absence']],
-            body: tableRows,
-            startY: 20,
-            headStyles: { fillColor: [22, 160, 133] },
-            theme: 'grid',
-            margin: { top: 10 },
-            styles: {
-                overflow: 'linebreak',
-                cellPadding: 2,
-                valign: 'middle',
-                fontSize: 12,
-                lineWidth: 0.2,
-                lineColor: [0, 0, 0],
-            },
-            columnStyles: {
-                0: { cellWidth: 'auto' },
-                1: { cellWidth: 'auto' },
-                2: { cellWidth: 'auto' },
-                3: { cellWidth: 'auto' },
-                4: { cellWidth: 'auto' }
-            },
-        });
-    
-        doc.save('historique_enregistrement.pdf');
-    });
-function groupRecordsByDate(records) {
-        return records.reduce((acc, record) => {
-            if (!acc[record.date]) {
-                acc[record.date] = [];
-            }
-            acc[record.date].push(record);
-            return acc;
-        }, {});
+    const historique = getLocalStorageData('historique') || []; // Utiliser 'historique' au lieu de 'presenceRecords'
+    if (historique.length === 0) {
+        alert("Aucun enregistrement à télécharger.");
+        return;
     }
-const logoutBtn = document.getElementById('logout-btn');
 
-logoutBtn.addEventListener('click', () => {
-    localStorage.setItem('adminLogin', JSON.stringify({ isLoggedIn: false }));
-    alert('Vous êtes déconnecté.');
-    window.location.reload();
-});
+    // Grouper les enregistrements par date
+    const groupedRecords = groupRecordsByDate(historique);
+
+    // Créer le tableau pour le PDF
+    const tableRows = [];
+    const dateTitles = Object.keys(groupedRecords).sort(); // Trier les dates pour une présentation chronologique
+
+    dateTitles.forEach(date => {
+        // Ajouter un titre de date en gras avec une taille de police plus grande
+        tableRows.push([{ content: `Date: ${date}`, colSpan: 5, styles: { fontSize: 14, fontStyle: 'bold', fillColor: [220, 220, 220] } }]);
+
+        // Ajouter les enregistrements pour cette date
+        groupedRecords[date].forEach(record => {
+            tableRows.push([
+                '',  // colonne vide pour la date
+                record.workerName || 'N/A',
+                record.time || 'N/A',
+                record.status || 'N/A',
+                record.absenceReason || '-'
+            ]);
+        });
+
+        // Ajouter une ligne vide après chaque groupe de dates pour la lisibilité
+        tableRows.push(['', '', '', '', '']);
+    });
+
+    // Générer le PDF
+    doc.autoTable({
+        head: [['Date', 'Nom du Travailleur', 'Heure', 'Statut', 'Raison d\'absence']],
+        body: tableRows,
+        startY: 20,
+        headStyles: { fillColor: [22, 160, 133] },
+        theme: 'grid',
+        margin: { top: 10 },
+        styles: {
+            overflow: 'linebreak',
+            cellPadding: 2,
+            valign: 'middle',
+            fontSize: 12,
+            lineWidth: 0.2,
+            lineColor: [0, 0, 0],
+        },
+        columnStyles: {
+            0: { cellWidth: 'auto' },
+            1: { cellWidth: 'auto' },
+            2: { cellWidth: 'auto' },
+            3: { cellWidth: 'auto' },
+            4: { cellWidth: 'auto' }
+        },
+    });
+
+    doc.save('historique_enregistrement.pdf');
+}
+
+// Assurez-vous que l'élément bouton existe avec le bon ID
+const downloadBtn = document.getElementById('download-pdf');
+if (downloadBtn) {
+    downloadBtn.addEventListener('click', downloadPDF);
+} else {
+    console.error("Le bouton de téléchargement n'a pas été trouvé.");
+}
+
+// Fonction pour grouper les enregistrements par date
+function groupRecordsByDate(records) {
+    return records.reduce((acc, record) => {
+        if (!acc[record.date]) {
+            acc[record.date] = [];
+        }
+        acc[record.date].push(record);
+        return acc;
+    }, {});
+}
+
+// Fonction utilitaire pour récupérer les données du localStorage
+function getLocalStorageData(key) {
+    return JSON.parse(localStorage.getItem(key)) || [];
+}
+
+// Fonction utilitaire pour enregistrer les données dans le localStorage
+function setLocalStorageData(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+}
 
 
 
